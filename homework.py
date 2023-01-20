@@ -1,16 +1,35 @@
 correctAnswers = ['A','B','D','A','B','B','B','C','C','D'];
+studentAnswers = [];
+studentDictionary = {};
+
 
 def gatherInput(iteration):
-    studentAnswers = [];
     studentID = int(input("Enter your Student ID: "));
-    while True:
-        answerChoices = ['A','B','C','D'];
-        questionAnswer = input("Your answer to question ",iteration,": ");
-        if questionAnswer.upper() or questionAnswer.lower() not in answerChoices:
-            print("Enter an answer A through D");
-        else:
-            studentAnswers[iteration] = questionAnswer;
-            break;
+    answerChoices = ['A','B','C','D'];
+    numCorrect = 0;
+    for i in range(10):
+        while True:
+            questionAnswer = input("Your answer to question: ");
+            if questionAnswer.upper() not in answerChoices:
+                print("Enter an answer A through D");
+            else:
+                studentAnswers.append(questionAnswer);
+                break;
+    for i in range(10):
+        if studentAnswers[i] == correctAnswers[i]:
+            numCorrect+=1;
+    studentAnswers.clear();
+    studentDictionary.update({studentID: numCorrect});
+    
+continueLoop = True;
+iteration = 0;
 
-for i in range(10):
-    gatherInput(i);
+while continueLoop:
+    gatherInput(iteration);
+    iteration+=1;
+    doContinue = str(input("Would you like to continue? Enter Y or N."))
+    if doContinue.upper() == "N":
+        break;
+
+print(studentDictionary);
+
