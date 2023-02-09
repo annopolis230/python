@@ -3,7 +3,12 @@ import os, stat
 currentDirectory = os.getcwd()
 
 def getINodeType(file_name):
-    return os.stat(os.path.join(os.getcwd(),file_name)).st_ino
+    #return os.stat(os.path.join(os.getcwd(),file_name)).st_ino
+    path = os.stat(file_name)
+    if (stat.S_ISDIR(path[stat.ST_MODE])):
+        return "Directory"
+    else:
+        return "File"
 
 def listEntries(dict):
     print("File name    File type")
