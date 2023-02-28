@@ -1,3 +1,4 @@
+
 import zipfile
 import shutil
 import os
@@ -20,6 +21,9 @@ def backup(source,destination):
 def archive(dir):
     if doesExist(dir, "archive source"): # Checking if the directory to be archived exists or not
         validArchives = ['zip','gztar','tar','bztar','xztar']
+        print("Valid archive types are: ")
+        for i in validArchives:
+            print(i)
         while True:
             archiveType = str(input("Enter the type of archive to create: "))
             if archiveType not in validArchives: # Checks if the archive type given by the user is a valid type
