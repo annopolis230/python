@@ -1,4 +1,3 @@
-
 import zipfile
 import shutil
 import os
@@ -12,26 +11,35 @@ def doesExist(dir, ident): # This function is used in a lot of places in order t
     return True
 
 def backup(source,destination):
-    if doesExist(source, "backup source") and doesExist(destination, "backup destination"): # Checking the source and destination directories exist
-        files = os.listdir(source)
-        for file in files:
-            shutil.copy2(os.path.join(source,file),destination) # Uses the copy2 method from shutil to copy the files from the source and paste them into the destination.
-        print("Backup successful")
-
+    while True:
+        if doesExist(source, "backup source") and doesExist(destination, "backup destination"): # Checking the source and destination directories exist
+            files = os.listdir(source)
+            for file in files:
+                shutil.copy2(os.path.join(source,file),destination) # Uses the copy2 method from shutil to copy the files from the source and paste them into the destination.
+            print("Backup successful")
+            break
+        else:
+            source = input("Enter another source for the backup function: ")
+            destination = input("Enter another destination for the backup function: ")
+        
 def archive(dir):
-    if doesExist(dir, "archive source"): # Checking if the directory to be archived exists or not
-        validArchives = ['zip','gztar','tar','bztar','xztar']
-        print("Valid archive types are: ")
-        for i in validArchives:
-            print(i)
-        while True:
-            archiveType = str(input("Enter the type of archive to create: "))
-            if archiveType not in validArchives: # Checks if the archive type given by the user is a valid type
-                print("Invalid archive type.")
-            else:
-                break
-        shutil.make_archive("archive",archiveType,dir) # Uses the make_archive method from shutil to create the appropriate archive. 
-        print(archiveType,"archive successful")
+    while True:
+        if doesExist(dir, "archive source"): # Checking if the directory to be archived exists or not
+            validArchives = ['zip','gztar','tar','bztar','xztar']
+            print("Valid archive types are: ")
+            for i in validArchives:
+                print(i)
+            while True:
+                archiveType = str(input("Enter the type of archive to create: "))
+                if archiveType not in validArchives: # Checks if the archive type given by the user is a valid type
+                    print("Invalid archive type.")
+                else:
+                    break
+            shutil.make_archive("archive",archiveType,dir) # Uses the make_archive method from shutil to create the appropriate archive. 
+            print(archiveType,"archive successful")
+            break
+        else:
+            dir = input("The source directory could not be found. Try again: ")
 
 def getSize(zip):
     pass
