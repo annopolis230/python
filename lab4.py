@@ -1,4 +1,4 @@
-import zipfile
+from zipfile import ZipFile
 import shutil
 import os
 import time
@@ -18,10 +18,11 @@ def backup(source,destination):
                 shutil.copy2(os.path.join(source,file),destination) # Uses the copy2 method from shutil to copy the files from the source and paste them into the destination.
             print("Backup successful")
             break
-        else:
+        elif not os.path.exists(source):
             source = input("Enter another source for the backup function: ")
+        elif not os.path.exists(destination):
             destination = input("Enter another destination for the backup function: ")
-        
+            
 def archive(dir):
     while True:
         if doesExist(dir, "archive source"): # Checking if the directory to be archived exists or not
@@ -36,13 +37,24 @@ def archive(dir):
                 else:
                     break
             shutil.make_archive("archive",archiveType,dir) # Uses the make_archive method from shutil to create the appropriate archive. 
-            print(archiveType,"archive successful")
+            print(archiveType,"archive successful as archive."+str(archiveType))
             break
         else:
             dir = input("The source directory could not be found. Try again: ")
 
-def getSize(zip):
-    pass
+def getSize(zipFile):
+    while True:
+        if not doesExist(zipFile, "zipfile"):
+            zipFile = input("Enter a valid zip file name: ")
+        else:
+            break
+    size = int(input("Enter size threshold: "))
+    print("Displaying files inside",zipFile,"with size greater than",size)
+    with ZipFile(zipFile, 'r') as file:
+        for i in file.namelist():
+            info = file.getinfo(i)
+            if info.file_size >= size:
+                print(i,info.file_size)
 
 def displayModifiedFiles(dir):
     directory = dir
@@ -70,7 +82,7 @@ def main():
         while True: # This loop just checks the given function name exists.
             toRun = input("Enter the name of the function to execute: ")
             if toRun.lower() not in functionDict:
-                print("Enter a valid function name.")
+                print("Invalid function name.")
             else:
                 break
         print(toRun,"takes these arguments:\n",inspect.signature(functionDict[toRun.lower()])) # Uses inspect.signature to print the required arguments for the given function.
@@ -79,7 +91,7 @@ def main():
         try: # This try block will catch any exception caused by supplying a function with not enough arguments. 
             functionDict[toRun.lower()](arg1)
         except TypeError: # If more arguments are required, the user is prompted to enter another. 
-            promptString = "Enter another argument for "+str(toRun)+": "
+            promptString = "Enter second argument for "+str(toRun)+": "
             arg2 = str(input(promptString))
             functionDict[toRun.lower()](arg1,arg2) # Calls the given function with both required arguments. 
         continueProgram = str(input("Would you like to continue the program? Type Y or N. "))
