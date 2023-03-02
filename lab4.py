@@ -18,7 +18,7 @@ def backup(source,destination):
                 shutil.copy2(os.path.join(source,file),destination) # Uses the copy2 method from shutil to copy the files from the source and paste them into the destination.
             print("Backup successful")
             break
-        elif not os.path.exists(source):
+        elif not os.path.exists(source): # If one or both of the source or destination could not be found, these else-ifs will determine which one and prompt the user to try again.
             source = input("Enter another source for the backup function: ")
         elif not os.path.exists(destination):
             destination = input("Enter another destination for the backup function: ")
@@ -82,7 +82,7 @@ def main():
         print("The valid functions are: ")
         for function in functionDict.keys():
             print(function)
-        while True: # This loop just checks the given function name exists.
+        while True: # This loop just checks if the given function name exists.
             toRun = input("Enter the name of the function to execute: ")
             if toRun.lower() not in functionDict:
                 print("Invalid function name.")
