@@ -43,18 +43,21 @@ def archive(dir):
             dir = input("The source directory could not be found. Try again: ")
 
 def getSize(zipFile):
-    while True:
+    while True: # If the given zipfile could not be found, this will prompt the user to enter a valid archive. 
         if not doesExist(zipFile, "zipfile"):
-            zipFile = input("Enter a valid zip file name: ")
+            zipFile = input("Enter a valid zip file name (.zip must be included): ")
         else:
             break
-    size = int(input("Enter size threshold: "))
-    print("Displaying files inside",zipFile,"with size greater than",size)
-    with ZipFile(zipFile, 'r') as file:
-        for i in file.namelist():
-            info = file.getinfo(i)
-            if info.file_size >= size:
-                print(i,info.file_size)
+    size = int(input("Enter size threshold in KB: "))
+    try: # Catch and handle an exception that may occur if the given archive is not a zip file. 
+        with ZipFile(zipFile, 'r') as file: # Open the zipfile, loop through it, and print files that are greater than the given size. 
+            print("Displaying files inside",zipFile,"with size greater than",size,"KB: ")
+            for i in file.namelist():
+                info = file.getinfo(i)
+                if info.file_size >= size/1024:
+                    print(i,info.file_size)
+    except Exception as e:
+        print(e)
 
 def displayModifiedFiles(dir):
     directory = dir
