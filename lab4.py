@@ -12,7 +12,7 @@ def doesExist(dir, ident): # This function is used in a lot of places in order t
 
 def backup(source,destination):
     while True:
-        if doesExist(source, "backup source") and doesExist(destination, "backup destination"): # Checking the source and destination directories exist
+        if doesExist(source, "Backup source") and doesExist(destination, "Backup destination"): # Checking the source and destination directories exist
             files = os.listdir(source)
             for file in files:
                 shutil.copy2(os.path.join(source,file),destination) # Uses the copy2 method from shutil to copy the files from the source and paste them into the destination.
@@ -25,7 +25,7 @@ def backup(source,destination):
             
 def archive(dir):
     while True:
-        if doesExist(dir, "archive source"): # Checking if the directory to be archived exists or not
+        if doesExist(dir, "Archive source"): # Checking if the directory to be archived exists or not
             validArchives = ['zip','gztar','tar','bztar','xztar']
             print("Valid archive types are: ")
             for i in validArchives:
@@ -54,12 +54,12 @@ def getSize(zipFile):
             print("Displaying files inside",zipFile,"with size greater than",size,"KB: ")
             for i in file.namelist():
                 info = file.getinfo(i)
-                if info.file_size >= size/1024:
+                if int(info.file_size)/1024 >= size:
                     print(i,info.file_size)
     except Exception as e:
         print(e)
 
-def displayModifiedFiles(dir):
+def displayModifiedFiles(dir): # If you use this function first and supply a valid argument, the other functions won't work properly because this one changes the current directory. 
     directory = dir
     if not doesExist(dir, "modified source"): # If the directory supplied doesn't exist, the function will use the current directory instead.
         directory = os.getcwd()
